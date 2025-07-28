@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Music Site</title>
+    <link rel="stylesheet" href="{% static 'music_app/dashboard.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="sidebar">
+      <img
+        src="{% static 'music_app/logo.png' %}"
+        alt="Blair Logo"
+        class="logo"
+      />
+      <div class="buttons-wrapper">
+        <button>Top searches</button>
+        <button>Contacts</button>
+      </div>
+      <div class="instagram"><i class="fab fa-instagram"></i></div>
+    </div>
+
+    <div class="main">
+      <div class="search-bar">
+        <input type="text" placeholder="Search for music" name="search" />
+      </div>
+
+      <h1 class="music-heading">Available Music</h1>
+
+      <div class="song-list">
+        {% for song in music_list %}
+        <div class="music-card">
+          <img
+            src="{{ song.cover_image.url }}"
+            alt="{{ song.name }} Cover"
+            onerror="this.src='{% static 'music_app/default_cover.jpg' %}'"
+          />
+          <div class="info">
+            <h3>{{ song.name }}</h3>
+            <p>{{ song.author }}</p>
+          </div>
+          <div class="actions">
+            <a href="{% url 'play_song' song.id %}">
+              <i class="fas fa-play-circle"></i>
+            </a>
+            <a href="{{ song.music_file.url }}" download>
+              <i class="fas fa-download"></i>
+            </a>
+          </div>
+        </div>
+        {% empty %}
+        <p>No songs available.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </body>
+</html>
